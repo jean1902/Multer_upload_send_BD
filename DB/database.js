@@ -1,7 +1,7 @@
 const express =require('express')
+const mysql =require('mysql');
 const router = express.Router();
-let db =require('../DB/dabase')
-let mysql = require('mysql');
+
 let db =mysql.createConnection({
     host:'localhost' ,
     user :'root',
@@ -12,14 +12,14 @@ let db =mysql.createConnection({
 
 
 //verification de la connexion a a la base de donnee
-db.connect(function (err) {
+db.connect(function ( req,res,err) {
     if (err) {
       console.log(err);
       res.render('une erreur est survenue')
     } else {
       console.log("Connected!");
      }
-    
+    //encore une fois tous est reussit
   });
 
-module.exports =router;
+module.exports =db;

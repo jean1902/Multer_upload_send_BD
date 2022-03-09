@@ -1,6 +1,9 @@
 const express =require('express');
-const multer =require('multer')
-const path = require('path')
+const multer =require('multer');
+const mysql =require('mysql');
+// const path = require('path')
+const database = require("./DB/database")
+
 const app =express();
 const Port=1500;
 
@@ -58,11 +61,34 @@ let storage = multer.diskStorage({
 let upload= multer({storage:storage});
 
 app.post('/',upload.single('image'),(req,res)=>{
-   console.log(req.file.filename);
-    console.log("voila sa oh",req.file);
-    console.log("voila sa oh",req.file.originalname);
-    res.redirect('/');
+
+    if(!req.file){
+        console.log("pas de fichier uploder")
+    }else{
+        console.log("voila sa",req.file.filename);
+
+        //host:http://127.0.0.1 ;
+        
+        var imgsrc = 'localhost:1500/image/' + req.file.filename;
+
+     let insertData = "INSERT INTO `user`(Nom) VALUES (?)";
+    database.query(insertData, [imgsrc],(err, result) => {
+        if (err) throw err
+        console.log("file uploaded")
+        res.redirect('/')
+    })
+      
+    }
+
    
+    // res.redirect('/');
+
+    //  let insertData = "INSERT INTO `user`(Nom) VALUES (?)";
+    // database.query(insertData, [imgsrc],(err, result) => {
+    //     console.log(database)
+    //     if (err) throw err
+    //     console.log("file uploaded")
+    // })
 
     // let sql = "INSERT INTO  image (name) VALUES (?)";
 
